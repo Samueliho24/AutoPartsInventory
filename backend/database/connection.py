@@ -26,7 +26,10 @@ def seed_sample_data() -> None:
     session = get_session()
     try:
         if session.query(Part).first() is not None:
+<<<<<<< Updated upstream
             # Ya hay datos, no seedear
+=======
+>>>>>>> Stashed changes
             return
 
         samples = [

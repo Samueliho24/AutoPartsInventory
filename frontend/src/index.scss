@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 // === Variables globales del tema oscuro ===
 $bg-primary: #1a1a2e;
 $bg-secondary: #16213e;
@@ -14,6 +15,43 @@ $danger: #f44336;
 $border-color: #2a2a4a;
 
 // === Reset y estilos base ===
+=======
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+:root {
+  --bg-primary: #f1f5f9;
+  --bg-card: #ffffff;
+  --bg-input: #f8fafc;
+  --bg-table-header: #f1f5f9;
+  --border-color: #e2e8f0;
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
+  --text-muted: #94a3b8;
+  --text-desc: #334155;
+  --accent-blue: #5b8def;
+  --accent-blue-hover: #4a7ad4;
+  --success: #34c759;
+  --success-hover: #2db14e;
+  --danger: #ff6b6b;
+  --danger-hover: #e55a5a;
+  --warning: #f5a623;
+  --shadow-md: 0 4px 24px rgba(0, 0, 0, 0.08);
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.06);
+  --backdrop: rgba(0, 0, 0, 0.3);
+  --sidebar-bg: #ffffff;
+  --sidebar-border: #e2e8f0;
+  --sidebar-text: #64748b;
+  --sidebar-text-hover: #0f172a;
+  --sidebar-hover-bg: #f1f5f9;
+  --sidebar-active-bg: #5b8def;
+  --sidebar-active-text: #ffffff;
+  --badge-high-bg: rgba(52, 199, 89, 0.1);
+  --badge-mid-bg: rgba(245, 166, 35, 0.1);
+  --badge-low-bg: rgba(255, 107, 107, 0.1);
+  --row-hover-bg: rgba(91, 141, 239, 0.04);
+}
+
+>>>>>>> Stashed changes
 *,
 *::before,
 *::after {
@@ -29,10 +67,17 @@ html {
 }
 
 body {
+<<<<<<< Updated upstream
   font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
   background-color: $bg-primary;
   color: $text-primary;
   line-height: 1.6;
+=======
+  font-family: 'Inter', 'Segoe UI', 'Roboto', sans-serif;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  line-height: 1.5;
+>>>>>>> Stashed changes
   overflow: hidden;
 }
 
@@ -42,13 +87,17 @@ body {
   display: flex;
 }
 
+<<<<<<< Updated upstream
 // === Scrollbar personalizada ===
+=======
+>>>>>>> Stashed changes
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
 }
 
 ::-webkit-scrollbar-track {
+<<<<<<< Updated upstream
   background: $bg-secondary;
 }
 
@@ -80,4 +129,16 @@ body {
   border: 1px solid $border-color;
   border-radius: 8px;
   padding: 16px;
+=======
+  background: var(--bg-primary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border-color);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-muted);
+>>>>>>> Stashed changes
 }

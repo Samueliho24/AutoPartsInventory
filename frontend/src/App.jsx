@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 import { useRouter } from './context/RouterContext';
 import Sidebar from './components/Sidebar';
 import Dashboard from './views/Dashboard';
@@ -22,6 +23,14 @@ function App() {
       <main style={{ flex: 1, overflow: 'hidden' }}>
         <ViewComponent />
       </main>
+=======
+import Dashboard from './components/Dashboard';
+
+function App() {
+  return (
+    <div style={{ width: '100vw', height: '100vh', overflow: 'hidden' }}>
+      <Dashboard />
+>>>>>>> Stashed changes
     </div>
   );
 }

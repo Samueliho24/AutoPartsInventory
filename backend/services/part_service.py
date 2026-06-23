@@ -72,13 +72,19 @@ def register_movement(part_id: str, type: str, quantity: int) -> dict:
                 f"Stock insuficiente. Disponible: {part.stock}, solicitado: {quantity}."
             )
 
+<<<<<<< Updated upstream
         # Actualizar stock
+=======
+>>>>>>> Stashed changes
         if type == "IN":
             part.stock += quantity
         else:
             part.stock -= quantity
 
+<<<<<<< Updated upstream
         # Crear registro de movimiento
+=======
+>>>>>>> Stashed changes
         movement = Movement(
             part_id=part.id,
             type=type,

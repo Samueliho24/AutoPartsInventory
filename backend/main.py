@@ -8,6 +8,7 @@ from services.part_service import (
     register_movement,
     get_movement_report,
 )
+<<<<<<< Updated upstream
 
 # Determinar la ruta base (funciona tanto en desarrollo como empaquetado con PyInstaller)
 if getattr(sys, "frozen", False):
@@ -15,6 +16,14 @@ if getattr(sys, "frozen", False):
     BASE_DIR = sys._MEIPASS
 else:
     # Entorno de desarrollo
+=======
+from services.pdf_generator_fpdf import generate_report as generate_pdf_report
+
+# Determinar la ruta base (funciona tanto en desarrollo como empaquetado con PyInstaller)
+if getattr(sys, "frozen", False):
+    BASE_DIR = sys._MEIPASS
+else:
+>>>>>>> Stashed changes
     BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 # Ruta al archivo HTML compilado por Vite
@@ -23,10 +32,14 @@ INDEX_HTML = os.path.join(FRONTEND_DIST, "index.html")
 
 
 class Api:
+<<<<<<< Updated upstream
     """
     Clase puente expuesta al frontend mediante window.pywebview.api.
     Todos los métodos aquí son llamables desde JavaScript.
     """
+=======
+    """Clase puente expuesta al frontend mediante window.pywebview.api."""
+>>>>>>> Stashed changes
 
     def get_app_info(self):
         """Devuelve información básica de la aplicación."""
@@ -68,16 +81,32 @@ class Api:
         except Exception as e:
             return {"error": str(e)}
 
+<<<<<<< Updated upstream
 
 def main():
     """Punto de entrada principal de la aplicación de escritorio."""
 
     # Inicializar base de datos y datos de ejemplo
+=======
+    def generate_report(self, report_type: str = "all") -> dict:
+        """Genera un PDF con el reporte de movimientos filtrado por tipo."""
+        try:
+            return generate_pdf_report(report_type)
+        except Exception as e:
+            return {"error": f"No se pudo generar el reporte: {e}"}
+
+
+def main():
+    """Punto de entrada principal de la aplicación de escritorio."""
+>>>>>>> Stashed changes
     print("Inicializando base de datos...")
     init_db()
     seed_sample_data()
 
+<<<<<<< Updated upstream
     # Verificar que el frontend esté compilado antes de lanzar la ventana
+=======
+>>>>>>> Stashed changes
     if not os.path.isfile(INDEX_HTML):
         print(
             "ERROR: No se encontró el frontend compilado en:",
@@ -86,7 +115,10 @@ def main():
         print("Ejecuta 'npm run build' dentro de la carpeta 'frontend/' primero.")
         sys.exit(1)
 
+<<<<<<< Updated upstream
     # Crear la ventana de la aplicación con PyWebView
+=======
+>>>>>>> Stashed changes
     window = webview.create_window(
         title="AutoPartsInventory - Gestión de Repuestos",
         url=INDEX_HTML,
@@ -97,7 +129,10 @@ def main():
         text_select=True,
     )
 
+<<<<<<< Updated upstream
     # Iniciar el bucle de eventos con la API expuesta
+=======
+>>>>>>> Stashed changes
     webview.start(
         debug=True,
         http_server=True,

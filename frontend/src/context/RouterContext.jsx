@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 import { createContext, useContext, useState, useCallback } from 'react';
 
 const VIEWS = {
@@ -30,3 +31,8 @@ export function useRouter() {
   }
   return ctx;
 }
+=======
+import { createContext } from 'react';
+
+export const RouterContext = createContext(null);
+>>>>>>> Stashed changes
