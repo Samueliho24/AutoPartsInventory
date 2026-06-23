@@ -1,6 +1,6 @@
 import uuid
 from datetime import datetime
-from sqlalchemy import Uuid, String, Integer, DateTime, ForeignKey
+from sqlalchemy import Uuid, String, Integer, Float, DateTime, ForeignKey
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
 
 
@@ -16,6 +16,9 @@ class Part(Base):
     location: Mapped[str | None] = mapped_column(String)
     description: Mapped[str | None] = mapped_column(String)
     stock: Mapped[int] = mapped_column(Integer, default=0)
+    purchase_cost: Mapped[float | None] = mapped_column(Float)
+    sale_price: Mapped[float | None] = mapped_column(Float)
+    currency: Mapped[str | None] = mapped_column(String)
     created_at: Mapped[datetime] = mapped_column(
         DateTime, nullable=False, default=datetime.now
     )

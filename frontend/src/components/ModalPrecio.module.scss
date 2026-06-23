@@ -19,7 +19,7 @@
   background-color: var(--bg-card);
   border: 1px solid var(--border-color);
   border-radius: 8px;
-  width: 520px;
+  width: 460px;
   max-width: 90vw;
   max-height: 90vh;
   overflow-y: auto;
@@ -78,176 +78,126 @@
   gap: 16px;
 }
 
-.hint {
-  font-size: 0.85rem;
-  color: var(--text-muted);
-  line-height: 1.4;
-}
-
-.options {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.optionCard {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  padding: 16px;
+.partBadge {
+  padding: 10px 14px;
   background-color: var(--bg-input);
-  border: 1.5px solid var(--border-color);
-  border-radius: 10px;
-  cursor: pointer;
-  transition: border-color 0.2s, background-color 0.2s;
-  text-align: left;
-  font-family: inherit;
-  width: 100%;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  line-height: 1.4;
 
-  &:hover {
-    background-color: var(--bg-card);
-    border-color: var(--text-muted);
-  }
-
-  &.selected {
-    background-color: var(--row-hover-bg);
-    border-color: var(--accent-color);
+  strong {
+    color: var(--text-primary);
   }
 }
 
-.optionIcon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-}
-
-.optionInfo {
+.formGroup {
   display: flex;
   flex-direction: column;
-  gap: 2px;
-  flex: 1;
+  gap: 6px;
 }
 
-.optionLabel {
-  font-size: 0.95rem;
-  font-weight: 600;
-  color: var(--text-primary);
-}
-
-.optionDesc {
+.label {
   font-size: 0.8rem;
-  color: var(--text-muted);
+  font-weight: 500;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
 }
 
-.radio {
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  border: 2px solid var(--border-color);
+.priceInputWrapper {
+  position: relative;
   display: flex;
   align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  transition: border-color 0.2s, background-color 0.2s;
 }
 
-.radioDot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background-color: #ffffff;
+.currencyPrefix {
+  position: absolute;
+  left: 14px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  pointer-events: none;
 }
 
-.divider {
-  height: 1px;
-  background-color: var(--border-color);
-  margin: 4px 0;
+.priceInput {
+  width: 100%;
+  padding: 10px 14px 10px 36px;
+  background-color: var(--bg-input);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  color: var(--text-primary);
+  font-size: 1.1rem;
+  font-family: inherit;
+  outline: none;
+  transition: border-color 0.2s;
+
+  &::placeholder {
+    color: var(--text-muted);
+  }
+
+  &:focus {
+    border-color: var(--accent-blue);
+  }
+
+  &::-webkit-inner-spin-button,
+  &::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  -moz-appearance: textfield;
 }
 
-.dateSection {
+.currencyToggle {
   display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.quickBtns {
-  display: flex;
-  flex-wrap: wrap;
   gap: 8px;
 }
 
-.quickBtn {
-  padding: 8px 16px;
+.currencyBtn {
+  flex: 1;
+  padding: 10px 16px;
   background-color: var(--bg-input);
-  border: 1px solid var(--border-color);
-  border-radius: 6px;
+  border: 1.5px solid var(--border-color);
+  border-radius: 8px;
   color: var(--text-secondary);
-  font-size: 0.8rem;
+  font-size: 0.9rem;
   font-weight: 500;
   font-family: inherit;
   cursor: pointer;
   transition: all 0.2s;
 
   &:hover {
-    border-color: var(--accent-blue);
-    color: var(--accent-blue);
+    border-color: var(--text-muted);
+    color: var(--text-primary);
   }
 }
 
-.quickBtnActive {
+.currencyActive {
   background-color: var(--accent-blue);
   border-color: var(--accent-blue);
   color: #ffffff;
 
   &:hover {
     background-color: var(--accent-blue-hover);
+    border-color: var(--accent-blue-hover);
     color: #ffffff;
   }
 }
 
-.dateInputs {
+.preview {
   display: flex;
-  gap: 12px;
-}
-
-.dateField {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  flex: 1;
-}
-
-.dateLabel {
-  font-size: 0.75rem;
-  font-weight: 500;
-  color: var(--text-muted);
-  text-transform: uppercase;
-  letter-spacing: 0.3px;
-}
-
-.dateInput {
-  padding: 8px 12px;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 16px;
   background-color: var(--bg-input);
   border: 1px solid var(--border-color);
-  border-radius: 6px;
-  color: var(--text-primary);
-  font-size: 0.85rem;
-  font-family: inherit;
-  outline: none;
-  transition: border-color 0.2s;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
 
-  &:focus {
-    border-color: var(--accent-blue);
-  }
-
-  &::-webkit-calendar-picker-indicator {
-    cursor: pointer;
-    opacity: 0.5;
-
-    &:hover {
-      opacity: 1;
-    }
+  strong {
+    color: var(--accent-blue);
   }
 }
 
@@ -277,7 +227,7 @@
   }
 }
 
-.btnGenerate {
+.btnConfirm {
   display: flex;
   align-items: center;
   gap: 8px;
@@ -291,7 +241,12 @@
   cursor: pointer;
   transition: background 0.2s;
 
-  &:hover {
+  &:hover:not(:disabled) {
     background-color: var(--accent-blue-hover);
+  }
+
+  &:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
   }
 }

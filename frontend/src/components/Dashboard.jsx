@@ -1,42 +1,37 @@
-import { useState, useMemo, useEffect } from 'react';
-import { Printer, Search, Plus, Minus, Package } from 'lucide-react';
+import { useState, useMemo, useEffect, useCallback } from 'react';
+import { TableVirtuoso } from 'react-virtuoso';
+import { Printer, Search, Plus, Minus, Package, Info, Pencil } from 'lucide-react';
 import styles from './Dashboard.module.scss';
 import ModalCarga from './ModalCarga';
 import ModalDescarga from './ModalDescarga';
 import ModalReporte from './ModalReporte';
-
-const initialParts = [
-  { id: '1',  part_number: '90915-YZZN1',  location: 'Estante A1', description: 'Filtro de aceite original Toyota (Corolla, Yaris, Terios)', stock: 27 },
-  { id: '2',  part_number: '15400-PLM-A02', location: 'Estante A1', description: 'Filtro de aceite original Honda (Civic, Accord)', stock: 16 },
-  { id: '3',  part_number: 'FL-820S',       location: 'Estante A2', description: 'Filtro de aceite Motorcraft Ford (F-150, Explorer)', stock: 23 },
-  { id: '4',  part_number: 'A2462C',        location: 'Estante A3', description: 'Filtro de aire de motor ACDelco GM (línea profesional)', stock: 12 },
-  { id: '5',  part_number: '04465-0K290',   location: 'Estante B1', description: 'Pastillas de freno delanteras Toyota (Hilux, Fortuner)', stock: 36 },
-  { id: '6',  part_number: '7L2Z-1104-A',   location: 'Estante B2', description: 'Cubo de rueda delantero Ford (Explorer 2006-2010)', stock: 8 },
-  { id: '7',  part_number: '513288',        location: 'Estante B3', description: 'Rodamiento de rueda trasera SKF (Chevrolet)', stock: 50 },
-  { id: '8',  part_number: '54611-3X000',   location: 'Estante B4', description: 'Amortiguador delantero Hyundai (Elantra)', stock: 9 },
-  { id: '9',  part_number: '12622441',      location: 'Estante C1', description: 'Bobina de encendido GM Genuine (Tahoe, Silverado)', stock: 20 },
-  { id: '10', part_number: 'ILKAR7B11',     location: 'Estante C2', description: 'Bujía de iridio NGK (Subaru, Toyota, Nissan)', stock: 88 },
-  { id: '11', part_number: '30520-R40-007', location: 'Estante C1', description: 'Bobina de encendido Honda (K24 Accord, CR-V)', stock: 9 },
-  { id: '12', part_number: '7701048390',    location: 'Estante C3', description: 'Bobina de encendido Renault (Clio, Logan, Megane)', stock: 11 },
-  { id: '13', part_number: 'K060840',       location: 'Estante D1', description: 'Correa de accesorios Gates serpentina 6 canales', stock: 34 },
-  { id: '14', part_number: '16100-39426',   location: 'Estante D2', description: 'Bomba de agua original Toyota (4Runner, Tacoma)', stock: 5 },
-  { id: '15', part_number: '5070',          location: 'Estante D3', description: 'Termostato de motor Stant (Ford, GM)', stock: 55 },
-];
+import ModalPrecio from './ModalPrecio';
+import ModalAcerca from './ModalAcerca';
+import { getInventory, loadEntry, unloadExit, updatePartPrice, generateReportPdf } from '../services/api';
 
 function Dashboard() {
-  const [parts, setParts] = useState(initialParts);
+  const [parts, setParts] = useState([]);
   const [search, setSearch] = useState('');
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (window.pywebview?.api?.get_all_parts) {
-      window.pywebview.api.get_all_parts().then((data) => {
-        if (Array.isArray(data)) setParts(data);
-      });
-    }
+    getInventory().then((data) => {
+      if (Array.isArray(data)) setParts(data);
+      setLoading(false);
+    });
   }, []);
+
+  const refreshInventory = useCallback(() => {
+    getInventory().then((data) => {
+      if (Array.isArray(data)) setParts(data);
+    });
+  }, []);
+
   const [modalCargaOpen, setModalCargaOpen] = useState(false);
   const [modalDescargaOpen, setModalDescargaOpen] = useState(false);
   const [modalReporteOpen, setModalReporteOpen] = useState(false);
+  const [modalPrecioOpen, setModalPrecioOpen] = useState(false);
+  const [modalAcercaOpen, setModalAcercaOpen] = useState(false);
   const [selectedPart, setSelectedPart] = useState(null);
 
   const filteredParts = useMemo(() => {
@@ -45,34 +40,41 @@ function Dashboard() {
     return parts.filter((p) => p.part_number.toLowerCase().includes(q));
   }, [search, parts]);
 
-  const handleCargaConfirm = (partNumber, location, description, quantity) => {
-    const existing = parts.find((p) => p.part_number === partNumber);
-    if (existing) {
-      setParts((prev) =>
-        prev.map((p) =>
-          p.part_number === partNumber
-            ? { ...p, stock: p.stock + quantity, location: location || p.location, description: description || p.description }
-            : p,
-        ),
-      );
-    } else {
-      const newPart = {
-        id: Date.now().toString(),
-        part_number: partNumber,
-        location: location || '—',
-        description: description || '—',
-        stock: quantity,
-      };
-      setParts((prev) => [...prev, newPart]);
+  const handleCargaConfirm = async (partNumber, location, description, quantity) => {
+    try {
+      await loadEntry(partNumber, location, description, quantity);
+      refreshInventory();
+    } catch (e) {
+      alert(e.message);
     }
   };
 
-  const handleDescargaConfirm = (partNumber, quantity) => {
-    setParts((prev) =>
-      prev.map((p) =>
-        p.part_number === partNumber ? { ...p, stock: p.stock - quantity } : p,
-      ),
-    );
+  const handleDescargaConfirm = async (partNumber, quantity) => {
+    try {
+      await unloadExit(partNumber, quantity);
+      refreshInventory();
+    } catch (e) {
+      alert(e.message);
+    }
+  };
+
+  const handlePrecioConfirm = async (partId, salePrice, currency) => {
+    try {
+      const updated = await updatePartPrice(partId, salePrice, currency);
+      setParts((prev) =>
+        prev.map((p) => (p.id === partId ? { ...p, ...updated } : p)),
+      );
+    } catch (e) {
+      alert(e.message);
+    }
+  };
+
+  const handleGenerarReporte = async (reportType, dateFrom, dateTo) => {
+    try {
+      await generateReportPdf(reportType, dateFrom, dateTo);
+    } catch (e) {
+      alert(e.message);
+    }
   };
 
   const openDescarga = (part) => {
@@ -85,12 +87,9 @@ function Dashboard() {
     setModalCargaOpen(true);
   };
 
-  const handleGenerarReporte = (reportType) => {
-    if (window.pywebview?.api?.generate_report) {
-      window.pywebview.api.generate_report(reportType);
-    } else {
-      alert(`Reporte "${reportType}" generado (demo).`);
-    }
+  const openPrecio = (part) => {
+    setSelectedPart(part);
+    setModalPrecioOpen(true);
   };
 
   const getStockBadgeClass = (stock) => {
@@ -99,9 +98,14 @@ function Dashboard() {
     return styles.badgeHigh;
   };
 
+  const formatPrice = (part) => {
+    if (part.sale_price == null) return '—';
+    const symbol = part.currency === 'Bs' ? 'Bs.' : '$';
+    return `${symbol} ${Number(part.sale_price).toFixed(2)}`;
+  };
+
   return (
     <div className={styles.dashboard}>
-      {/* Header */}
       <header className={styles.header}>
         <div className={styles.headerLeft}>
           <Package size={28} className={styles.headerIcon} />
@@ -110,13 +114,18 @@ function Dashboard() {
             <p className={styles.headerSub}>Gestión rápida de repuestos</p>
           </div>
         </div>
-        <button className={styles.btnPrint} onClick={() => setModalReporteOpen(true)}>
-          <Printer size={18} />
-          Imprimir Reporte
-        </button>
+        <div className={styles.headerActions}>
+          <button className={styles.btnAbout} onClick={() => setModalAcercaOpen(true)}>
+            <Info size={18} />
+            Acerca de
+          </button>
+          <button className={styles.btnPrint} onClick={() => setModalReporteOpen(true)}>
+            <Printer size={18} />
+            Imprimir Reporte
+          </button>
+        </div>
       </header>
 
-      {/* Controls */}
       <div className={styles.controls}>
         <div className={styles.searchWrapper}>
           <Search size={18} className={styles.searchIcon} />
@@ -140,20 +149,26 @@ function Dashboard() {
         </div>
       </div>
 
-      {/* Table */}
       <div className={styles.tableContainer}>
-        <table className={styles.table}>
-          <thead>
-            <tr>
-              <th>Número de Parte</th>
-              <th>Ubicación</th>
-              <th>Descripción</th>
-              <th>Cantidad en Existencia</th>
-            </tr>
-          </thead>
-          <tbody>
-            {filteredParts.map((part) => (
-              <tr key={part.id} className={styles.tableRow}>
+        {loading ? (
+          <div className={styles.loadingRow}>Cargando inventario...</div>
+        ) : (
+          <TableVirtuoso
+            style={{ height: '100%' }}
+            data={filteredParts}
+            fixedHeaderContent={() => (
+              <tr>
+                <th style={{ width: 160 }}>Número de Parte</th>
+                <th style={{ width: 120 }}>Ubicación</th>
+                <th>Descripción</th>
+                <th style={{ width: 100 }}>Stock</th>
+                <th style={{ width: 120 }}>Precio Venta</th>
+                <th style={{ width: 80 }}>Moneda</th>
+                <th style={{ width: 110 }}>Acción</th>
+              </tr>
+            )}
+            itemContent={(index, part) => (
+              <>
                 <td className={styles.cellPart}>{part.part_number}</td>
                 <td className={styles.cellLocation}>{part.location}</td>
                 <td className={styles.cellDesc}>{part.description}</td>
@@ -162,20 +177,45 @@ function Dashboard() {
                     {part.stock}
                   </span>
                 </td>
-              </tr>
-            ))}
-            {filteredParts.length === 0 && (
-              <tr>
-                <td colSpan={4} className={styles.emptyRow}>
-                  No se encontraron repuestos con ese número de parte.
+                <td className={styles.cellPrice}>{formatPrice(part)}</td>
+                <td className={styles.cellCurrency}>{part.currency || '—'}</td>
+                <td>
+                  <div className={styles.actionBtns}>
+                    <button className={styles.btnAction} onClick={() => openCarga(part)} title="Entrada">
+                      <Plus size={14} />
+                    </button>
+                    <button className={styles.btnAction} onClick={() => openDescarga(part)} title="Salida">
+                      <Minus size={14} />
+                    </button>
+                    <button className={styles.btnAction} onClick={() => openPrecio(part)} title="Editar precio">
+                      <Pencil size={14} />
+                    </button>
+                  </div>
                 </td>
-              </tr>
+              </>
             )}
-          </tbody>
-        </table>
+            components={{
+              Table: (props) => <table {...props} className={styles.table} />,
+              EmptyPlaceholder: () => (
+                <tr>
+                  <td colSpan={7} className={styles.emptyRow}>
+                    No se encontraron repuestos con ese número de parte.
+                  </td>
+                </tr>
+              ),
+              TableRow: ({ item, ...props }) => (
+                <tr {...props} className={styles.tableRow} />
+              ),
+            }}
+          />
+        )}
       </div>
 
-      {/* Modales */}
+      <footer className={styles.footer}>
+        <span>© 2026 Tu Nombre. Todos los derechos reservados.</span>
+        <span className={styles.footerVersion}>v1.1.0</span>
+      </footer>
+
       <ModalCarga
         key={`carga-${modalCargaOpen}`}
         isOpen={modalCargaOpen}
@@ -195,6 +235,16 @@ function Dashboard() {
         isOpen={modalReporteOpen}
         onClose={() => setModalReporteOpen(false)}
         onGenerar={handleGenerarReporte}
+      />
+      <ModalPrecio
+        isOpen={modalPrecioOpen}
+        onClose={() => { setModalPrecioOpen(false); setSelectedPart(null); }}
+        onConfirm={handlePrecioConfirm}
+        part={selectedPart}
+      />
+      <ModalAcerca
+        isOpen={modalAcercaOpen}
+        onClose={() => setModalAcercaOpen(false)}
       />
     </div>
   );

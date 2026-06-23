@@ -76,3 +76,20 @@ body {
 ::-webkit-scrollbar-thumb:hover {
   background: var(--text-muted);
 }
+
+/* TableVirtuoso overrides */
+[data-virtuoso-scroller] {
+  outline: none;
+}
+
+[data-virtuoso-scroller] table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+
+[data-virtuoso-scroller] thead {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}

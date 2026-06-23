@@ -26,8 +26,23 @@ const OPTIONS = [
   },
 ];
 
+function toDateInput(d) {
+  return d.toISOString().slice(0, 10);
+}
+
+function addDays(date, days) {
+  const r = new Date(date);
+  r.setDate(r.getDate() + days);
+  return r;
+}
+
 function ModalReporte({ isOpen, onClose, onGenerar }) {
   const [selected, setSelected] = useState('all');
+  const today = new Date();
+
+  const [dateFrom, setDateFrom] = useState('');
+  const [dateTo, setDateTo] = useState('');
+  const [rangeMode, setRangeMode] = useState('all'); // 'all' | 'week' | 'month' | 'year' | 'custom'
 
   if (!isOpen) return null;
 
@@ -35,8 +50,37 @@ function ModalReporte({ isOpen, onClose, onGenerar }) {
     if (e.target === e.currentTarget) onClose();
   };
 
+  const handleQuickRange = (mode) => {
+    setRangeMode(mode);
+    if (mode === 'all') {
+      setDateFrom('');
+      setDateTo('');
+    } else if (mode === 'week') {
+      setDateFrom(toDateInput(addDays(today, -7)));
+      setDateTo(toDateInput(today));
+    } else if (mode === 'month') {
+      setDateFrom(toDateInput(addDays(today, -30)));
+      setDateTo(toDateInput(today));
+    } else if (mode === 'year') {
+      setDateFrom(toDateInput(addDays(today, -365)));
+      setDateTo(toDateInput(today));
+    }
+  };
+
+  const handleCustomFrom = (val) => {
+    setDateFrom(val);
+    setRangeMode('custom');
+  };
+
+  const handleCustomTo = (val) => {
+    setDateTo(val);
+    setRangeMode('custom');
+  };
+
   const handleGenerar = () => {
-    onGenerar(selected);
+    const f = dateFrom || null;
+    const t = dateTo || null;
+    onGenerar(selected, f, t);
     onClose();
   };
 
@@ -90,6 +134,51 @@ function ModalReporte({ isOpen, onClose, onGenerar }) {
                 </button>
               );
             })}
+          </div>
+
+          <div className={styles.divider} />
+
+          <div className={styles.dateSection}>
+            <p className={styles.hint}>Filtrar por rango de fechas (opcional):</p>
+
+            <div className={styles.quickBtns}>
+              {[
+                { label: 'Todo', value: 'all' },
+                { label: 'Última Semana', value: 'week' },
+                { label: 'Último Mes', value: 'month' },
+                { label: 'Último Año', value: 'year' },
+              ].map((btn) => (
+                <button
+                  key={btn.value}
+                  type="button"
+                  className={`${styles.quickBtn} ${rangeMode === btn.value ? styles.quickBtnActive : ''}`}
+                  onClick={() => handleQuickRange(btn.value)}
+                >
+                  {btn.label}
+                </button>
+              ))}
+            </div>
+
+            <div className={styles.dateInputs}>
+              <div className={styles.dateField}>
+                <label className={styles.dateLabel}>Desde</label>
+                <input
+                  type="date"
+                  className={styles.dateInput}
+                  value={dateFrom}
+                  onChange={(e) => handleCustomFrom(e.target.value)}
+                />
+              </div>
+              <div className={styles.dateField}>
+                <label className={styles.dateLabel}>Hasta</label>
+                <input
+                  type="date"
+                  className={styles.dateInput}
+                  value={dateTo}
+                  onChange={(e) => handleCustomTo(e.target.value)}
+                />
+              </div>
+            </div>
           </div>
         </div>
 

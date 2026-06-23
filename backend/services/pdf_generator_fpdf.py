@@ -5,7 +5,7 @@ from datetime import datetime
 
 from fpdf import FPDF
 
-from services.part_service import get_movement_report
+from services.part_service import get_movement_report_with_range
 
 
 DARK_BG = (241, 245, 249)
@@ -37,21 +37,13 @@ class ReportPDF(FPDF):
         self.cell(0, 10, f'Pagina {self.page_no()}/{{nb}}', align='C')
 
 
-def generate_report(report_type='all'):
-    movements = get_movement_report()
+def generate_report(report_type='all', date_from=None, date_to=None):
+    data = get_movement_report_with_range(report_type, date_from, date_to)
+    movements = data['movements']
+    totals = data['totals']
 
-    if report_type == 'all':
-        filtered = movements
-        title_suffix = 'Completo'
-    elif report_type == 'IN':
-        filtered = [m for m in movements if m['type'] == 'IN']
-        title_suffix = 'Solo Entradas (IN)'
-    elif report_type == 'OUT':
-        filtered = [m for m in movements if m['type'] == 'OUT']
-        title_suffix = 'Solo Salidas (OUT)'
-    else:
-        filtered = movements
-        title_suffix = 'Completo'
+    type_labels = {'all': 'Completo', 'IN': 'Solo Entradas (IN)', 'OUT': 'Solo Salidas (OUT)'}
+    title_suffix = type_labels.get(report_type, 'Completo')
 
     pdf = ReportPDF()
     pdf.alias_nb_pages()
@@ -62,7 +54,16 @@ def generate_report(report_type='all'):
     pdf.set_text_color(*SECONDARY_TEXT)
     pdf.cell(0, 6, f'Control de Inventarios  |  Reporte {title_suffix}', align='C')
     pdf.ln(4)
-    pdf.cell(0, 6, f'Generado el {datetime.now().strftime("%d/%m/%Y %H:%M")}', align='C')
+
+    range_str = ''
+    if date_from and date_to:
+        range_str = f' | Desde: {date_from}  Hasta: {date_to}'
+    elif date_from:
+        range_str = f' | Desde: {date_from}'
+    elif date_to:
+        range_str = f' | Hasta: {date_to}'
+
+    pdf.cell(0, 6, f'Generado el {datetime.now().strftime("%d/%m/%Y %H:%M")}{range_str}', align='C')
     pdf.ln(12)
 
     col_w = [34, 36, 66, 28, 26]
@@ -78,7 +79,7 @@ def generate_report(report_type='all'):
     pdf.set_font('Helvetica', '', 9)
     alt = False
 
-    for m in filtered:
+    for m in movements:
         tipo = m['type']
         tipo_label = 'Entrada' if tipo == 'IN' else 'Salida'
 
@@ -106,10 +107,31 @@ def generate_report(report_type='all'):
 
         alt = not alt
 
-    if not filtered:
+    if not movements:
         pdf.set_text_color(*SECONDARY_TEXT)
         pdf.set_font('Helvetica', 'I', 10)
         pdf.cell(0, 20, 'No hay movimientos registrados para este reporte.', align='C')
+    else:
+        pdf.ln(8)
+        pdf.set_font('Helvetica', 'B', 10)
+        pdf.set_fill_color(*CARD_BG)
+        pdf.set_text_color(*WHITE_TEXT)
+        pdf.cell(0, 10, '  Resumen de Totales', border=0, align='L', fill=True)
+        pdf.ln(12)
+
+        pdf.set_font('Helvetica', '', 9)
+        pdf.set_text_color(*GREEN)
+        pdf.cell(80, 7, f'Total Entradas (IN):   {totals["total_in"]}', align='L')
+        pdf.ln(7)
+
+        pdf.set_text_color(*RED)
+        pdf.cell(80, 7, f'Total Salidas (OUT):  {totals["total_out"]}', align='L')
+        pdf.ln(7)
+
+        pdf.set_text_color(*BODY_TEXT)
+        pdf.set_font('Helvetica', 'B', 10)
+        net_label = 'Ganancia Neta' if totals['net'] >= 0 else 'Perdida Neta'
+        pdf.cell(80, 7, f'{net_label}: {abs(totals["net"])}', align='L')
 
     tmp = tempfile.NamedTemporaryFile(suffix='.pdf', delete=False)
     tmp.close()
