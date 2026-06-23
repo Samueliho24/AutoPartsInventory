@@ -20,13 +20,7 @@ class Part(Base):
         DateTime, nullable=False, default=datetime.now
     )
 
-<<<<<<< Updated upstream
     movements: Mapped[list["Movement"]] = relationship(back_populates="part", cascade="all, delete-orphan")
-=======
-    movements: Mapped[list["Movement"]] = relationship(
-        back_populates="part", cascade="all, delete-orphan"
-    )
->>>>>>> Stashed changes
 
 
 class Movement(Base):

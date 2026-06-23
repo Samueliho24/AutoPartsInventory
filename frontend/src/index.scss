@@ -1,23 +1,3 @@
-<<<<<<< Updated upstream
-// === Variables globales del tema oscuro ===
-$bg-primary: #1a1a2e;
-$bg-secondary: #16213e;
-$bg-card: #1e2a4a;
-$bg-sidebar: #0f1a2e;
-$text-primary: #e0e0e0;
-$text-secondary: #a0a0b0;
-$text-muted: #6c6c80;
-$accent-primary: #00bcd4;
-$accent-secondary: #ff6f00;
-$success: #4caf50;
-$warning: #ff9800;
-$danger: #f44336;
-$border-color: #2a2a4a;
-
-// === Reset y estilos base ===
-=======
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
-
 :root {
   --bg-primary: #f1f5f9;
   --bg-card: #ffffff;
@@ -51,7 +31,6 @@ $border-color: #2a2a4a;
   --row-hover-bg: rgba(91, 141, 239, 0.04);
 }
 
->>>>>>> Stashed changes
 *,
 *::before,
 *::after {
@@ -67,17 +46,10 @@ html {
 }
 
 body {
-<<<<<<< Updated upstream
-  font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
-  background-color: $bg-primary;
-  color: $text-primary;
-  line-height: 1.6;
-=======
   font-family: 'Inter', 'Segoe UI', 'Roboto', sans-serif;
   background-color: var(--bg-primary);
   color: var(--text-primary);
   line-height: 1.5;
->>>>>>> Stashed changes
   overflow: hidden;
 }
 
@@ -87,49 +59,12 @@ body {
   display: flex;
 }
 
-<<<<<<< Updated upstream
-// === Scrollbar personalizada ===
-=======
->>>>>>> Stashed changes
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
 }
 
 ::-webkit-scrollbar-track {
-<<<<<<< Updated upstream
-  background: $bg-secondary;
-}
-
-::-webkit-scrollbar-thumb {
-  background: $border-color;
-  border-radius: 3px;
-
-  &:hover {
-    background: $text-muted;
-  }
-}
-
-// === Utilidades compartidas ===
-.page-container {
-  padding: 24px;
-  height: 100%;
-  overflow-y: auto;
-}
-
-.page-title {
-  font-size: 1.5rem;
-  font-weight: 600;
-  margin-bottom: 24px;
-  color: $text-primary;
-}
-
-.card {
-  background-color: $bg-card;
-  border: 1px solid $border-color;
-  border-radius: 8px;
-  padding: 16px;
-=======
   background: var(--bg-primary);
 }
 
@@ -140,5 +75,4 @@ body {
 
 ::-webkit-scrollbar-thumb:hover {
   background: var(--text-muted);
->>>>>>> Stashed changes
 }

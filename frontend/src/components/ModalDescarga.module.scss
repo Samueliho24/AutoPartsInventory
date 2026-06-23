@@ -1,8 +1,7 @@
-/* ─── Backdrop ─── */
 .backdrop {
   position: fixed;
   inset: 0;
-  background-color: rgba(0, 0, 0, 0.6);
+  background-color: var(--backdrop);
   backdrop-filter: blur(4px);
   display: flex;
   align-items: center;
@@ -16,16 +15,15 @@
   to { opacity: 1; }
 }
 
-/* ─── Modal ─── */
 .modal {
-  background-color: #1e293b;
-  border: 1px solid #2d3a50;
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
   border-radius: 8px;
   width: 480px;
   max-width: 90vw;
   max-height: 90vh;
   overflow-y: auto;
-  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.3);
+  box-shadow: var(--shadow-md);
   animation: slideUp 0.2s ease;
 }
 
@@ -34,7 +32,6 @@
   to { transform: translateY(0); opacity: 1; }
 }
 
-/* ─── Header ─── */
 .modalHeader {
   display: flex;
   align-items: center;
@@ -45,7 +42,7 @@
 .modalTitle {
   font-size: 1.1rem;
   font-weight: 600;
-  color: #f1f5f9;
+  color: var(--text-primary);
 }
 
 .closeBtn {
@@ -57,24 +54,23 @@
   background: transparent;
   border: none;
   border-radius: 6px;
-  color: #64748b;
+  color: var(--text-muted);
   cursor: pointer;
   transition: background 0.2s, color 0.2s;
 
   &:hover {
-    background-color: #2d3a50;
-    color: #f1f5f9;
+    background-color: var(--border-color);
+    color: var(--text-primary);
   }
 }
 
 .accentLine {
   height: 3px;
-  background-color: #ef4444;
+  background-color: var(--danger);
   margin: 0 24px 16px;
   border-radius: 2px;
 }
 
-/* ─── Body ─── */
 .modalBody {
   padding: 0 24px 20px;
   display: flex;
@@ -92,28 +88,28 @@
 .label {
   font-size: 0.8rem;
   font-weight: 500;
-  color: #94a3b8;
+  color: var(--text-secondary);
   text-transform: uppercase;
   letter-spacing: 0.4px;
 }
 
 .input {
   padding: 10px 14px;
-  background-color: #1a2332;
-  border: 1px solid #2d3a50;
+  background-color: var(--bg-input);
+  border: 1px solid var(--border-color);
   border-radius: 8px;
-  color: #f1f5f9;
+  color: var(--text-primary);
   font-size: 0.9rem;
   font-family: inherit;
   outline: none;
   transition: border-color 0.2s;
 
   &::placeholder {
-    color: #64748b;
+    color: var(--text-muted);
   }
 
   &:focus {
-    border-color: #ef4444;
+    border-color: var(--danger);
   }
 
   &::-webkit-inner-spin-button,
@@ -125,24 +121,23 @@
 }
 
 .inputError {
-  border-color: #ef4444;
+  border-color: var(--danger);
   &:focus {
-    border-color: #ef4444;
+    border-color: var(--danger);
   }
 }
 
-/* ─── Autocomplete ─── */
 .suggestions {
   position: absolute;
   top: 100%;
   left: 0;
   right: 0;
-  background-color: #1e293b;
-  border: 1px solid #2d3a50;
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
   border-radius: 8px;
   margin-top: 4px;
   z-index: 10;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+  box-shadow: var(--shadow-md);
   max-height: 160px;
   overflow-y: auto;
 }
@@ -155,18 +150,18 @@
   padding: 10px 14px;
   background: transparent;
   border: none;
-  color: #f1f5f9;
+  color: var(--text-primary);
   font-size: 0.85rem;
   cursor: pointer;
   text-align: left;
   transition: background 0.15s;
 
   &:hover {
-    background-color: #2d3a50;
+    background-color: var(--row-hover-bg);
   }
 
   &:not(:last-child) {
-    border-bottom: 1px solid #1a2332;
+    border-bottom: 1px solid var(--border-color);
   }
 }
 
@@ -175,55 +170,52 @@
 }
 
 .suggStock {
-  color: #94a3b8;
+  color: var(--text-secondary);
   font-size: 0.8rem;
 }
 
-/* ─── Part Info ─── */
 .partInfo {
   padding: 12px 14px;
-  background-color: #1a2332;
-  border: 1px solid #2d3a50;
+  background-color: var(--bg-input);
+  border: 1px solid var(--border-color);
   border-radius: 8px;
   font-size: 0.85rem;
-  color: #cbd5e1;
+  color: var(--text-desc);
   line-height: 1.6;
 }
 
 .stockLabel {
-  color: #94a3b8;
+  color: var(--text-secondary);
   font-size: 0.8rem;
 }
 
-/* ─── Alerta ─── */
 .alert {
   display: flex;
   align-items: center;
   gap: 10px;
   padding: 12px 14px;
-  background-color: rgba(239, 68, 68, 0.1);
-  border: 1px solid rgba(239, 68, 68, 0.3);
+  background-color: var(--badge-low-bg);
+  border: 1px solid var(--danger);
   border-radius: 8px;
-  color: #ef4444;
+  color: var(--danger);
   font-size: 0.85rem;
   font-weight: 500;
 }
 
-/* ─── Footer ─── */
 .modalFooter {
   display: flex;
   align-items: center;
   justify-content: flex-end;
   gap: 10px;
   padding: 16px 24px;
-  border-top: 1px solid #2d3a50;
+  border-top: 1px solid var(--border-color);
 }
 
 .btnCancel {
   padding: 10px 20px;
   background: transparent;
-  color: #94a3b8;
-  border: 1px solid #2d3a50;
+  color: var(--text-secondary);
+  border: 1px solid var(--border-color);
   border-radius: 8px;
   font-size: 0.875rem;
   font-weight: 500;
@@ -231,14 +223,14 @@
   transition: background 0.2s, color 0.2s;
 
   &:hover {
-    background-color: #2d3a50;
-    color: #f1f5f9;
+    background-color: var(--border-color);
+    color: var(--text-primary);
   }
 }
 
 .btnConfirm {
   padding: 10px 24px;
-  background-color: #ef4444;
+  background-color: var(--danger);
   color: #ffffff;
   border: none;
   border-radius: 8px;
@@ -248,7 +240,7 @@
   transition: background 0.2s;
 
   &:hover:not(:disabled) {
-    background-color: #dc2626;
+    background-color: var(--danger-hover);
   }
 
   &:disabled {

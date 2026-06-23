@@ -1,8 +1,4 @@
-<<<<<<< Updated upstream
 import { useRouter } from '../context/RouterContext';
-=======
-import { useRouter } from '../context/useRouter';
->>>>>>> Stashed changes
 import { LayoutDashboard, Package, ArrowRightLeft, FileSpreadsheet } from 'lucide-react';
 import styles from './Sidebar.module.scss';
 

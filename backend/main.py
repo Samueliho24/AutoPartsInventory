@@ -8,65 +8,41 @@ from services.part_service import (
     register_movement,
     get_movement_report,
 )
-<<<<<<< Updated upstream
-
-# Determinar la ruta base (funciona tanto en desarrollo como empaquetado con PyInstaller)
-if getattr(sys, "frozen", False):
-    # Ejecutándose como ejecutable de PyInstaller
-    BASE_DIR = sys._MEIPASS
-else:
-    # Entorno de desarrollo
-=======
 from services.pdf_generator_fpdf import generate_report as generate_pdf_report
 
-# Determinar la ruta base (funciona tanto en desarrollo como empaquetado con PyInstaller)
 if getattr(sys, "frozen", False):
     BASE_DIR = sys._MEIPASS
 else:
->>>>>>> Stashed changes
     BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
-# Ruta al archivo HTML compilado por Vite
 FRONTEND_DIST = os.path.join(BASE_DIR, "..", "frontend", "dist")
 INDEX_HTML = os.path.join(FRONTEND_DIST, "index.html")
 
 
 class Api:
-<<<<<<< Updated upstream
-    """
-    Clase puente expuesta al frontend mediante window.pywebview.api.
-    Todos los métodos aquí son llamables desde JavaScript.
-    """
-=======
-    """Clase puente expuesta al frontend mediante window.pywebview.api."""
->>>>>>> Stashed changes
 
     def get_app_info(self):
-        """Devuelve información básica de la aplicación."""
         return {
             "name": "AutoPartsInventory",
             "version": "1.0.0",
         }
 
     def get_all_parts(self) -> list:
-        """Retorna todos los repuestos."""
         try:
             return get_all_parts()
         except Exception as e:
             return {"error": str(e)}
 
     def search_part_by_number(self, part_number: str):
-        """Busca un repuesto por número de parte."""
         try:
             result = search_part_by_number(part_number)
             if result is None:
-                return {"error": f"No se encontró el repuesto '{part_number}'."}
+                return {"error": f"No se encontr\u00f3 el repuesto '{part_number}'."}
             return result
         except Exception as e:
             return {"error": str(e)}
 
     def register_movement(self, part_id: str, type: str, quantity: int):
-        """Registra una entrada (IN) o salida (OUT) de inventario."""
         try:
             return register_movement(part_id, type, quantity)
         except ValueError as e:
@@ -75,21 +51,12 @@ class Api:
             return {"error": f"Error inesperado: {e}"}
 
     def get_movement_report(self) -> list:
-        """Retorna el historial de movimientos para el reporte."""
         try:
             return get_movement_report()
         except Exception as e:
             return {"error": str(e)}
 
-<<<<<<< Updated upstream
-
-def main():
-    """Punto de entrada principal de la aplicación de escritorio."""
-
-    # Inicializar base de datos y datos de ejemplo
-=======
     def generate_report(self, report_type: str = "all") -> dict:
-        """Genera un PDF con el reporte de movimientos filtrado por tipo."""
         try:
             return generate_pdf_report(report_type)
         except Exception as e:
@@ -97,30 +64,20 @@ def main():
 
 
 def main():
-    """Punto de entrada principal de la aplicación de escritorio."""
->>>>>>> Stashed changes
     print("Inicializando base de datos...")
     init_db()
     seed_sample_data()
 
-<<<<<<< Updated upstream
-    # Verificar que el frontend esté compilado antes de lanzar la ventana
-=======
->>>>>>> Stashed changes
     if not os.path.isfile(INDEX_HTML):
         print(
-            "ERROR: No se encontró el frontend compilado en:",
+            "ERROR: No se encontr\u00f3 el frontend compilado en:",
             INDEX_HTML,
         )
         print("Ejecuta 'npm run build' dentro de la carpeta 'frontend/' primero.")
         sys.exit(1)
 
-<<<<<<< Updated upstream
-    # Crear la ventana de la aplicación con PyWebView
-=======
->>>>>>> Stashed changes
     window = webview.create_window(
-        title="AutoPartsInventory - Gestión de Repuestos",
+        title="AutoPartsInventory - Gesti\u00f3n de Repuestos",
         url=INDEX_HTML,
         width=1280,
         height=800,
@@ -129,10 +86,6 @@ def main():
         text_select=True,
     )
 
-<<<<<<< Updated upstream
-    # Iniciar el bucle de eventos con la API expuesta
-=======
->>>>>>> Stashed changes
     webview.start(
         debug=True,
         http_server=True,

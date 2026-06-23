@@ -2,12 +2,11 @@
   display: flex;
   flex-direction: column;
   height: 100vh;
-  background-color: #0f172a;
+  background-color: var(--bg-primary);
   padding: 24px 32px;
   gap: 20px;
 }
 
-/* ─── Header ─── */
 .header {
   display: flex;
   align-items: center;
@@ -21,19 +20,19 @@
 }
 
 .headerIcon {
-  color: #3b82f6;
+  color: var(--accent-blue);
 }
 
 .headerTitle {
   font-size: 1.35rem;
   font-weight: 700;
-  color: #f1f5f9;
+  color: var(--text-primary);
   line-height: 1.2;
 }
 
 .headerSub {
   font-size: 0.8rem;
-  color: #64748b;
+  color: var(--text-muted);
   margin-top: 2px;
 }
 
@@ -42,9 +41,9 @@
   align-items: center;
   gap: 8px;
   padding: 10px 20px;
-  background-color: #1e293b;
-  color: #94a3b8;
-  border: 1px solid #2d3a50;
+  background-color: var(--bg-card);
+  color: var(--text-secondary);
+  border: 1px solid var(--border-color);
   border-radius: 8px;
   font-size: 0.875rem;
   font-weight: 500;
@@ -52,13 +51,12 @@
   transition: background 0.2s, color 0.2s, border-color 0.2s;
 
   &:hover {
-    background-color: #3b82f6;
+    background-color: var(--accent-blue);
     color: #ffffff;
-    border-color: #3b82f6;
+    border-color: var(--accent-blue);
   }
 }
 
-/* ─── Controls ─── */
 .controls {
   display: flex;
   align-items: center;
@@ -77,28 +75,28 @@
   left: 14px;
   top: 50%;
   transform: translateY(-50%);
-  color: #64748b;
+  color: var(--text-muted);
   pointer-events: none;
 }
 
 .searchInput {
   width: 100%;
   padding: 12px 14px 12px 42px;
-  background-color: #1a2332;
-  border: 1px solid #2d3a50;
+  background-color: var(--bg-input);
+  border: 1px solid var(--border-color);
   border-radius: 8px;
-  color: #f1f5f9;
+  color: var(--text-primary);
   font-size: 0.9rem;
   font-family: inherit;
   outline: none;
   transition: border-color 0.2s;
 
   &::placeholder {
-    color: #64748b;
+    color: var(--text-muted);
   }
 
   &:focus {
-    border-color: #3b82f6;
+    border-color: var(--accent-blue);
   }
 }
 
@@ -112,7 +110,7 @@
   align-items: center;
   gap: 8px;
   padding: 12px 20px;
-  background-color: #10b981;
+  background-color: var(--success);
   color: #ffffff;
   border: none;
   border-radius: 8px;
@@ -122,7 +120,7 @@
   transition: background 0.2s, transform 0.15s;
 
   &:hover {
-    background-color: #059669;
+    background-color: var(--success-hover);
     transform: translateY(-1px);
   }
 
@@ -136,7 +134,7 @@
   align-items: center;
   gap: 8px;
   padding: 12px 20px;
-  background-color: #ef4444;
+  background-color: var(--danger);
   color: #ffffff;
   border: none;
   border-radius: 8px;
@@ -146,7 +144,7 @@
   transition: background 0.2s, transform 0.15s;
 
   &:hover {
-    background-color: #dc2626;
+    background-color: var(--danger-hover);
     transform: translateY(-1px);
   }
 
@@ -155,12 +153,11 @@
   }
 }
 
-/* ─── Table ─── */
 .tableContainer {
   flex: 1;
   overflow-y: auto;
-  background-color: #1e293b;
-  border: 1px solid #2d3a50;
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
   border-radius: 8px;
 }
 
@@ -174,11 +171,11 @@
   text-align: left;
   font-size: 0.8rem;
   font-weight: 600;
-  color: #64748b;
+  color: var(--text-secondary);
   text-transform: uppercase;
   letter-spacing: 0.5px;
-  border-bottom: 1px solid #2d3a50;
-  background-color: #162033;
+  border-bottom: 1px solid var(--border-color);
+  background-color: var(--bg-table-header);
   position: sticky;
   top: 0;
   z-index: 1;
@@ -188,15 +185,15 @@
   transition: background-color 0.15s;
 
   &:hover {
-    background-color: rgba(59, 130, 246, 0.06);
+    background-color: var(--row-hover-bg);
   }
 }
 
 .tableRow td {
   padding: 14px 18px;
   font-size: 0.9rem;
-  border-bottom: 1px solid #1a2332;
-  color: #f1f5f9;
+  border-bottom: 1px solid var(--border-color);
+  color: var(--text-primary);
 }
 
 .cellPart {
@@ -205,11 +202,11 @@
 }
 
 .cellLocation {
-  color: #94a3b8;
+  color: var(--text-secondary);
 }
 
 .cellDesc {
-  color: #cbd5e1;
+  color: var(--text-desc);
 }
 
 .stockBadge {
@@ -224,23 +221,23 @@
 }
 
 .badgeHigh {
-  background-color: rgba(16, 185, 129, 0.15);
-  color: #10b981;
+  background-color: var(--badge-high-bg);
+  color: var(--success);
 }
 
 .badgeMid {
-  background-color: rgba(245, 158, 11, 0.15);
-  color: #f59e0b;
+  background-color: var(--badge-mid-bg);
+  color: var(--warning);
 }
 
 .badgeLow {
-  background-color: rgba(239, 68, 68, 0.15);
-  color: #ef4444;
+  background-color: var(--badge-low-bg);
+  color: var(--danger);
 }
 
 .emptyRow {
   text-align: center;
   padding: 40px 18px !important;
-  color: #64748b;
+  color: var(--text-muted);
   font-style: italic;
 }

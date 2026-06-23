@@ -60,7 +60,7 @@ def generate_report(report_type='all'):
 
     pdf.set_font('Helvetica', '', 9)
     pdf.set_text_color(*SECONDARY_TEXT)
-    pdf.cell(0, 6, f'Control de Inventario Express  |  Reporte {title_suffix}', align='C')
+    pdf.cell(0, 6, f'Control de Inventarios  |  Reporte {title_suffix}', align='C')
     pdf.ln(4)
     pdf.cell(0, 6, f'Generado el {datetime.now().strftime("%d/%m/%Y %H:%M")}', align='C')
     pdf.ln(12)

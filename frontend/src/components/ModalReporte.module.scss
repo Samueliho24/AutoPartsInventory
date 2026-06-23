@@ -1,7 +1,7 @@
 .backdrop {
   position: fixed;
   inset: 0;
-  background-color: rgba(0, 0, 0, 0.6);
+  background-color: var(--backdrop);
   backdrop-filter: blur(4px);
   display: flex;
   align-items: center;
@@ -16,14 +16,14 @@
 }
 
 .modal {
-  background-color: #1e293b;
-  border: 1px solid #2d3a50;
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
   border-radius: 8px;
   width: 520px;
   max-width: 90vw;
   max-height: 90vh;
   overflow-y: auto;
-  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.3);
+  box-shadow: var(--shadow-md);
   animation: slideUp 0.2s ease;
 }
 
@@ -42,7 +42,7 @@
 .modalTitle {
   font-size: 1.1rem;
   font-weight: 600;
-  color: #f1f5f9;
+  color: var(--text-primary);
 }
 
 .closeBtn {
@@ -54,19 +54,19 @@
   background: transparent;
   border: none;
   border-radius: 6px;
-  color: #64748b;
+  color: var(--text-muted);
   cursor: pointer;
   transition: background 0.2s, color 0.2s;
 
   &:hover {
-    background-color: #2d3a50;
-    color: #f1f5f9;
+    background-color: var(--border-color);
+    color: var(--text-primary);
   }
 }
 
 .accentLine {
   height: 3px;
-  background-color: #3b82f6;
+  background-color: var(--accent-blue);
   margin: 0 24px 16px;
   border-radius: 2px;
 }
@@ -80,7 +80,7 @@
 
 .hint {
   font-size: 0.85rem;
-  color: #94a3b8;
+  color: var(--text-muted);
   line-height: 1.4;
 }
 
@@ -95,8 +95,8 @@
   align-items: center;
   gap: 14px;
   padding: 16px;
-  background-color: #1a2332;
-  border: 1.5px solid #2d3a50;
+  background-color: var(--bg-input);
+  border: 1.5px solid var(--border-color);
   border-radius: 10px;
   cursor: pointer;
   transition: border-color 0.2s, background-color 0.2s;
@@ -105,12 +105,12 @@
   width: 100%;
 
   &:hover {
-    background-color: #1e2a3e;
-    border-color: #64748b;
+    background-color: var(--bg-card);
+    border-color: var(--text-muted);
   }
 
   &.selected {
-    background-color: rgba(59, 130, 246, 0.06);
+    background-color: var(--row-hover-bg);
     border-color: var(--accent-color);
   }
 }
@@ -132,19 +132,19 @@
 .optionLabel {
   font-size: 0.95rem;
   font-weight: 600;
-  color: #f1f5f9;
+  color: var(--text-primary);
 }
 
 .optionDesc {
   font-size: 0.8rem;
-  color: #64748b;
+  color: var(--text-muted);
 }
 
 .radio {
   width: 20px;
   height: 20px;
   border-radius: 50%;
-  border: 2px solid #2d3a50;
+  border: 2px solid var(--border-color);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -165,14 +165,14 @@
   justify-content: flex-end;
   gap: 10px;
   padding: 16px 24px;
-  border-top: 1px solid #2d3a50;
+  border-top: 1px solid var(--border-color);
 }
 
 .btnCancel {
   padding: 10px 20px;
   background: transparent;
-  color: #94a3b8;
-  border: 1px solid #2d3a50;
+  color: var(--text-secondary);
+  border: 1px solid var(--border-color);
   border-radius: 8px;
   font-size: 0.875rem;
   font-weight: 500;
@@ -180,8 +180,8 @@
   transition: background 0.2s, color 0.2s;
 
   &:hover {
-    background-color: #2d3a50;
-    color: #f1f5f9;
+    background-color: var(--border-color);
+    color: var(--text-primary);
   }
 }
 
@@ -190,7 +190,7 @@
   align-items: center;
   gap: 8px;
   padding: 10px 24px;
-  background-color: #3b82f6;
+  background-color: var(--accent-blue);
   color: #ffffff;
   border: none;
   border-radius: 8px;
@@ -200,6 +200,6 @@
   transition: background 0.2s;
 
   &:hover {
-    background-color: #2563eb;
+    background-color: var(--accent-blue-hover);
   }
 }

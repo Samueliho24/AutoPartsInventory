@@ -8,21 +8,21 @@ const OPTIONS = [
     label: 'Reporte Completo',
     desc: 'Todos los movimientos de entrada y salida',
     icon: FileText,
-    color: '#3b82f6',
+    color: '#5b8def',
   },
   {
     value: 'IN',
     label: 'Solo Cargas',
     desc: 'Unicamente movimientos de entrada (IN)',
     icon: ArrowDownToLine,
-    color: '#10b981',
+    color: '#34c759',
   },
   {
     value: 'OUT',
     label: 'Solo Descargas',
     desc: 'Unicamente movimientos de salida (OUT)',
     icon: ArrowUpFromLine,
-    color: '#ef4444',
+    color: '#ff6b6b',
   },
 ];
 
@@ -81,7 +81,7 @@ function ModalReporte({ isOpen, onClose, onGenerar }) {
                   <div
                     className={styles.radio}
                     style={{
-                      borderColor: isSelected ? opt.color : '#2d3a50',
+                      borderColor: isSelected ? opt.color : '#e2e8f0',
                       backgroundColor: isSelected ? opt.color : 'transparent',
                     }}
                   >
