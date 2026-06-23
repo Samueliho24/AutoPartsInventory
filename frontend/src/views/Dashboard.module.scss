@@ -1,0 +1,43 @@
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 16px;
+}
+
+.card {
+  background-color: #1e2a4a;
+  border: 1px solid #2a2a4a;
+  border-radius: 8px;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.cardIcon {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.cardInfo {
+  display: flex;
+  flex-direction: column;
+}
+
+.cardValue {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #e0e0e0;
+  line-height: 1.2;
+}
+
+.cardLabel {
+  font-size: 0.8rem;
+  color: #a0a0b0;
+  margin-top: 4px;
+}

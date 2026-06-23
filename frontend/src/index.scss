@@ -1,0 +1,83 @@
+// === Variables globales del tema oscuro ===
+$bg-primary: #1a1a2e;
+$bg-secondary: #16213e;
+$bg-card: #1e2a4a;
+$bg-sidebar: #0f1a2e;
+$text-primary: #e0e0e0;
+$text-secondary: #a0a0b0;
+$text-muted: #6c6c80;
+$accent-primary: #00bcd4;
+$accent-secondary: #ff6f00;
+$success: #4caf50;
+$warning: #ff9800;
+$danger: #f44336;
+$border-color: #2a2a4a;
+
+// === Reset y estilos base ===
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+  background-color: $bg-primary;
+  color: $text-primary;
+  line-height: 1.6;
+  overflow: hidden;
+}
+
+#root {
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+}
+
+// === Scrollbar personalizada ===
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: $bg-secondary;
+}
+
+::-webkit-scrollbar-thumb {
+  background: $border-color;
+  border-radius: 3px;
+
+  &:hover {
+    background: $text-muted;
+  }
+}
+
+// === Utilidades compartidas ===
+.page-container {
+  padding: 24px;
+  height: 100%;
+  overflow-y: auto;
+}
+
+.page-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 24px;
+  color: $text-primary;
+}
+
+.card {
+  background-color: $bg-card;
+  border: 1px solid $border-color;
+  border-radius: 8px;
+  padding: 16px;
+}

@@ -1,0 +1,4 @@
+pywebview
+fpdf2
+pyinstaller
+sqlalchemy
