@@ -99,6 +99,16 @@ function ModalDescarga({ isOpen, onClose, onConfirm, parts, initialPart }) {
             )}
           </div>
 
+          {selectedPart && (
+            <div className={styles.partInfo}>
+              <strong>{selectedPart.part_number}</strong> — {selectedPart.description}
+              <br />
+              <span className={styles.stockLabel}>
+                Stock disponible: <strong>{stockDisponible}</strong>
+              </span>
+            </div>
+          )}
+
           <div className={styles.formGroup}>
             <label className={styles.label}>Cantidad a Retirar</label>
             <input
@@ -111,21 +121,11 @@ function ModalDescarga({ isOpen, onClose, onConfirm, parts, initialPart }) {
             />
           </div>
 
-          {selectedPart && (
-            <div className={styles.partInfo}>
-              <strong>{selectedPart.part_number}</strong> — {selectedPart.description}
-              <br />
-              <span className={styles.stockLabel}>
-                Stock disponible: <strong>{stockDisponible}</strong>
-              </span>
-            </div>
-          )}
-
           {excedeStock && qty > 0 && (
             <div className={styles.alert}>
               <AlertTriangle size={16} />
               <span>
-                Error: La cantidad ingresada supera las existencias en el inventario
+                La cantidad ingresada supera las existencias en el inventario
               </span>
             </div>
           )}

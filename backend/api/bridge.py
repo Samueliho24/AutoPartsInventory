@@ -37,25 +37,32 @@ class InventoryAPI:
         except Exception as e:
             return {"error": str(e)}
 
-    def load_entry(self, part_number: str, location: str, description: str, quantity: int):
+    def load_entry(self, part_number: str, location: str, description: str, quantity: int, purchase_cost: float = None, sale_price: float = None):
         """Si existe el repuesto, suma stock. Si no, lo crea y registra IN."""
         try:
             existing = search_part_by_number(part_number)
             if existing:
                 result = register_movement(existing["id"], "IN", quantity)
-                if location:
+                if location or description or purchase_cost is not None or sale_price is not None:
                     from database.connection import get_session
                     from database.models import Part
                     session = get_session()
                     try:
                         part = session.query(Part).filter(Part.id == result["id"]).first()
                         if part:
-                            part.location = location
+                            if location:
+                                part.location = location
                             if description:
                                 part.description = description
+                            if purchase_cost is not None:
+                                part.purchase_cost = purchase_cost
+                            if sale_price is not None:
+                                part.sale_price = sale_price
                             session.commit()
                             result["location"] = part.location or ""
                             result["description"] = part.description or ""
+                            result["purchase_cost"] = part.purchase_cost
+                            result["sale_price"] = part.sale_price
                     finally:
                         session.close()
                 return result
@@ -72,6 +79,8 @@ class InventoryAPI:
                         location=location or "",
                         description=description or "",
                         stock=quantity,
+                        purchase_cost=purchase_cost,
+                        sale_price=sale_price,
                         created_at=datetime.now(),
                     )
                     session.add(new_part)
@@ -117,9 +126,9 @@ class InventoryAPI:
         except Exception as e:
             return {"error": str(e)}
 
-    def update_part_price(self, part_id: str, sale_price: float, currency: str):
+    def update_part_price(self, part_id: str, sale_price: float, currency: str, purchase_cost: float = None):
         try:
-            return update_price(part_id, sale_price, currency)
+            return update_price(part_id, sale_price, currency, purchase_cost)
         except ValueError as e:
             return {"error": str(e)}
         except Exception as e:

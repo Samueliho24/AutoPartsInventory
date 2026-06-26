@@ -26,7 +26,7 @@ const FALLBACK_PARTS = [
 
 export async function getAppInfo() {
   if (!isPyWebView()) {
-    return { name: 'AutoPartsInventory', version: '1.1.0', developer: 'Tu Nombre', email: 'contacto@ejemplo.com', description: 'Sistema de gestión de inventario para repuestos automotrices.' };
+    return { name: 'AutoPartsInventory', version: '1.1.0', developer: 'Samuel Chourio', email: 'chourio.samuel.24@gmail.com', description: 'Sistema de gestión de inventario para repuestos automotrices.' };
   }
   return getApi().get_app_info();
 }
@@ -49,11 +49,11 @@ export async function searchPart(partNumber) {
   return data;
 }
 
-export async function loadEntry(partNumber, location, description, quantity) {
+export async function loadEntry(partNumber, location, description, quantity, purchaseCost, salePrice) {
   if (!isPyWebView()) {
-    return { id: Date.now().toString(), part_number: partNumber, location, description, stock: quantity, purchase_cost: null, sale_price: null, currency: '' };
+    return { id: Date.now().toString(), part_number: partNumber, location, description, stock: quantity, purchase_cost: purchaseCost ?? null, sale_price: salePrice ?? null, currency: '' };
   }
-  const data = await getApi().load_entry(partNumber, location, description, quantity);
+  const data = await getApi().load_entry(partNumber, location, description, quantity, purchaseCost ?? null, salePrice ?? null);
   if (data?.error) throw new Error(data.error);
   return data;
 }
@@ -67,11 +67,11 @@ export async function unloadExit(partNumber, quantity) {
   return data;
 }
 
-export async function updatePartPrice(partId, salePrice, currency) {
+export async function updatePartPrice(partId, salePrice, currency, purchaseCost) {
   if (!isPyWebView()) {
-    return { id: partId, sale_price: salePrice, currency };
+    return { id: partId, sale_price: salePrice, currency, purchase_cost: purchaseCost };
   }
-  const data = await getApi().update_part_price(partId, salePrice, currency);
+  const data = await getApi().update_part_price(partId, salePrice, currency, purchaseCost ?? null);
   if (data?.error) throw new Error(data.error);
   return data;
 }
@@ -87,7 +87,7 @@ export async function getMovementReportRange(typeFilter, dateFrom, dateTo) {
 
 export async function generateReportPdf(reportType, dateFrom, dateTo) {
   if (!isPyWebView()) {
-    return { success: 'Reporte generado (demo).' };
+    return { success: true, filename: 'reporte-demo.pdf', filepath: '' };
   }
   const data = await getApi().generate_report_pdf(reportType, dateFrom || null, dateTo || null);
   if (data?.error) throw new Error(data.error);

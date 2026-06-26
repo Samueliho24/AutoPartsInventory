@@ -1,6 +1,6 @@
 import { useState, useMemo, useEffect, useCallback } from 'react';
 import { TableVirtuoso } from 'react-virtuoso';
-import { Printer, Search, Plus, Minus, Package, Info, Pencil } from 'lucide-react';
+import { Printer, Search, Plus, Minus, Info, Pencil } from 'lucide-react';
 import styles from './Dashboard.module.scss';
 import ModalCarga from './ModalCarga';
 import ModalDescarga from './ModalDescarga';
@@ -8,8 +8,10 @@ import ModalReporte from './ModalReporte';
 import ModalPrecio from './ModalPrecio';
 import ModalAcerca from './ModalAcerca';
 import { getInventory, loadEntry, unloadExit, updatePartPrice, generateReportPdf } from '../services/api';
+import { useToast } from '../context/ToastContext';
 
 function Dashboard() {
+  const toast = useToast();
   const [parts, setParts] = useState([]);
   const [search, setSearch] = useState('');
   const [loading, setLoading] = useState(true);
@@ -37,15 +39,20 @@ function Dashboard() {
   const filteredParts = useMemo(() => {
     if (!search.trim()) return parts;
     const q = search.toLowerCase();
-    return parts.filter((p) => p.part_number.toLowerCase().includes(q));
+    return parts.filter((p) =>
+      p.part_number.toLowerCase().includes(q) ||
+      p.location.toLowerCase().includes(q) ||
+      p.description.toLowerCase().includes(q)
+    );
   }, [search, parts]);
 
-  const handleCargaConfirm = async (partNumber, location, description, quantity) => {
+  const handleCargaConfirm = async (partNumber, location, description, quantity, purchaseCost, salePrice) => {
     try {
-      await loadEntry(partNumber, location, description, quantity);
+      await loadEntry(partNumber, location, description, quantity, purchaseCost, salePrice);
       refreshInventory();
+      toast.showToast('Entrada registrada correctamente', 'success');
     } catch (e) {
-      alert(e.message);
+      toast.showToast(e.message, 'error');
     }
   };
 
@@ -53,27 +60,40 @@ function Dashboard() {
     try {
       await unloadExit(partNumber, quantity);
       refreshInventory();
+      toast.showToast('Salida registrada correctamente', 'success');
     } catch (e) {
-      alert(e.message);
+      toast.showToast(e.message, 'error');
     }
   };
 
-  const handlePrecioConfirm = async (partId, salePrice, currency) => {
+  const handlePrecioConfirm = async (partId, salePrice, currency, purchaseCost) => {
     try {
-      const updated = await updatePartPrice(partId, salePrice, currency);
+      const updated = await updatePartPrice(partId, salePrice, currency, purchaseCost);
       setParts((prev) =>
         prev.map((p) => (p.id === partId ? { ...p, ...updated } : p)),
       );
+      toast.showToast('Precios actualizados correctamente', 'success');
     } catch (e) {
-      alert(e.message);
+      toast.showToast(e.message, 'error');
     }
   };
 
   const handleGenerarReporte = async (reportType, dateFrom, dateTo) => {
     try {
-      await generateReportPdf(reportType, dateFrom, dateTo);
+      const result = await generateReportPdf(reportType, dateFrom, dateTo);
+      const actions = [];
+      if (result.filepath) {
+        actions.push({ label: 'Ver Reporte', action: () => window.open(`file://${result.filepath}`) });
+      }
+      actions.push({ label: 'Aceptar', action: () => {} });
+      toast.showToast(
+        `Reporte guardado en Descargas: ${result.filename || 'reporte.pdf'}`,
+        'success',
+        actions,
+        8000,
+      );
     } catch (e) {
-      alert(e.message);
+      toast.showToast(e.message, 'error');
     }
   };
 
@@ -104,11 +124,17 @@ function Dashboard() {
     return `${symbol} ${Number(part.sale_price).toFixed(2)}`;
   };
 
+  const formatCost = (part) => {
+    if (part.purchase_cost == null) return '—';
+    const symbol = part.currency === 'Bs' ? 'Bs.' : '$';
+    return `${symbol} ${Number(part.purchase_cost).toFixed(2)}`;
+  };
+
   return (
     <div className={styles.dashboard}>
       <header className={styles.header}>
         <div className={styles.headerLeft}>
-          <Package size={28} className={styles.headerIcon} />
+          <img src="./logo.svg" alt="AutoPartsInventory" className={styles.headerLogo} />
           <div>
             <h1 className={styles.headerTitle}>Control de Inventario</h1>
             <p className={styles.headerSub}>Gestión rápida de repuestos</p>
@@ -158,12 +184,13 @@ function Dashboard() {
             data={filteredParts}
             fixedHeaderContent={() => (
               <tr>
-                <th style={{ width: 160 }}>Número de Parte</th>
-                <th style={{ width: 120 }}>Ubicación</th>
+                <th style={{ width: 150 }}>Número de Parte</th>
+                <th style={{ width: 110 }}>Ubicación</th>
                 <th>Descripción</th>
-                <th style={{ width: 100 }}>Stock</th>
-                <th style={{ width: 120 }}>Precio Venta</th>
-                <th style={{ width: 80 }}>Moneda</th>
+                <th style={{ width: 80 }}>Stock</th>
+                <th style={{ width: 110 }}>Costo Compra</th>
+                <th style={{ width: 110 }}>Precio Venta</th>
+                <th style={{ width: 70 }}>Moneda</th>
                 <th style={{ width: 110 }}>Acción</th>
               </tr>
             )}
@@ -177,6 +204,7 @@ function Dashboard() {
                     {part.stock}
                   </span>
                 </td>
+                <td className={styles.cellCost}>{formatCost(part)}</td>
                 <td className={styles.cellPrice}>{formatPrice(part)}</td>
                 <td className={styles.cellCurrency}>{part.currency || '—'}</td>
                 <td>
@@ -198,12 +226,12 @@ function Dashboard() {
               Table: (props) => <table {...props} className={styles.table} />,
               EmptyPlaceholder: () => (
                 <tr>
-                  <td colSpan={7} className={styles.emptyRow}>
-                    No se encontraron repuestos con ese número de parte.
+                  <td colSpan={8} className={styles.emptyRow}>
+                    No se encontraron repuestos.
                   </td>
                 </tr>
               ),
-              TableRow: ({ item, ...props }) => (
+              TableRow: ({ item: _item, ...props }) => (
                 <tr {...props} className={styles.tableRow} />
               ),
             }}
@@ -212,7 +240,7 @@ function Dashboard() {
       </div>
 
       <footer className={styles.footer}>
-        <span>© 2026 Tu Nombre. Todos los derechos reservados.</span>
+        <span>© 2026 Samuel Chourio. Todos los derechos reservados.</span>
         <span className={styles.footerVersion}>v1.1.0</span>
       </footer>
 
@@ -222,6 +250,7 @@ function Dashboard() {
         onClose={() => setModalCargaOpen(false)}
         onConfirm={handleCargaConfirm}
         initialPart={selectedPart}
+        parts={parts}
       />
       <ModalDescarga
         key={`descarga-${modalDescargaOpen}`}

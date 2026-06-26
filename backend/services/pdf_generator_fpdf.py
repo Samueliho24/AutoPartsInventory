@@ -1,6 +1,4 @@
 import os
-import tempfile
-import webbrowser
 from datetime import datetime
 
 from fpdf import FPDF
@@ -133,8 +131,9 @@ def generate_report(report_type='all', date_from=None, date_to=None):
         net_label = 'Ganancia Neta' if totals['net'] >= 0 else 'Perdida Neta'
         pdf.cell(80, 7, f'{net_label}: {abs(totals["net"])}', align='L')
 
-    tmp = tempfile.NamedTemporaryFile(suffix='.pdf', delete=False)
-    tmp.close()
-    pdf.output(tmp.name)
-    webbrowser.open(f'file://{tmp.name}')
-    return {'success': f'Reporte {title_suffix} generado correctamente.'}
+    downloads = os.path.join(os.path.expanduser("~"), "Downloads")
+    os.makedirs(downloads, exist_ok=True)
+    filename = f"reporte-inventario-{datetime.now().strftime('%Y%m%d-%H%M%S')}.pdf"
+    filepath = os.path.join(downloads, filename)
+    pdf.output(filepath)
+    return {'success': True, 'filepath': filepath, 'filename': filename}

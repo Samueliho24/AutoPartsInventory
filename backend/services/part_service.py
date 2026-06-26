@@ -137,8 +137,8 @@ def get_movement_report() -> list[dict]:
         session.close()
 
 
-def update_price(part_id: str, sale_price: float, currency: str) -> dict:
-    """Actualiza el precio de venta y moneda de un repuesto."""
+def update_price(part_id: str, sale_price: float, currency: str, purchase_cost: float = None) -> dict:
+    """Actualiza el precio de venta, costo de compra y moneda de un repuesto."""
     try:
         part_uuid = uuid.UUID(part_id)
     except ValueError:
@@ -152,6 +152,8 @@ def update_price(part_id: str, sale_price: float, currency: str) -> dict:
 
         if sale_price is not None:
             part.sale_price = sale_price
+        if purchase_cost is not None:
+            part.purchase_cost = purchase_cost
         if currency:
             part.currency = currency
 

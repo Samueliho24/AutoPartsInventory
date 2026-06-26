@@ -19,6 +19,12 @@
   gap: 14px;
 }
 
+.headerLogo {
+  width: 32px;
+  height: 32px;
+  flex-shrink: 0;
+}
+
 .headerIcon {
   color: var(--accent-blue);
 }
@@ -93,7 +99,7 @@
 .searchWrapper {
   position: relative;
   flex: 1;
-  max-width: 420px;
+  max-width: 520px;
 }
 
 .searchIcon {
@@ -235,6 +241,11 @@
 
 .cellDesc {
   color: var(--text-desc);
+}
+
+.cellCost {
+  font-weight: 500;
+  color: var(--text-secondary);
 }
 
 .cellPrice {

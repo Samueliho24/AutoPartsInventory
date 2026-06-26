@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { X, Package, Mail, User, Info } from 'lucide-react';
+import { X, Mail, User, Info } from 'lucide-react';
 import { getAppInfo } from '../services/api';
 import styles from './ModalAcerca.module.scss';
 
@@ -32,7 +32,7 @@ function ModalAcerca({ isOpen, onClose }) {
         <div className={styles.modalBody}>
           <div className={styles.logoSection}>
             <div className={styles.logoCircle}>
-              <Package size={36} />
+              <img src="./logo.svg" alt="AutoPartsInventory" width="36" height="36" />
             </div>
             <h3 className={styles.appName}>
               {appInfo?.name || 'AutoPartsInventory'}
@@ -54,7 +54,7 @@ function ModalAcerca({ isOpen, onClose }) {
               <div>
                 <span className={styles.infoLabel}>Desarrollador</span>
                 <span className={styles.infoValue}>
-                  {appInfo?.developer || 'Tu Nombre'}
+                  {appInfo?.developer || 'Samuel Chourio'}
                 </span>
               </div>
             </div>
@@ -63,10 +63,10 @@ function ModalAcerca({ isOpen, onClose }) {
               <div>
                 <span className={styles.infoLabel}>Contacto</span>
                 <a
-                  href={`mailto:${appInfo?.email || 'contacto@ejemplo.com'}`}
+                  href={`mailto:${appInfo?.email || 'chourio.samuel.24@gmail.com'}`}
                   className={styles.emailLink}
                 >
-                  {appInfo?.email || 'contacto@ejemplo.com'}
+                  {appInfo?.email || 'chourio.samuel.24@gmail.com'}
                 </a>
               </div>
             </div>
@@ -76,6 +76,24 @@ function ModalAcerca({ isOpen, onClose }) {
                 <span className={styles.infoLabel}>Tecnologías</span>
                 <span className={styles.infoValue}>
                   Python · React · PyWebView · SQLite
+                </span>
+              </div>
+            </div>
+            <div className={styles.infoRow}>
+              <Info size={16} className={styles.infoIcon} />
+              <div>
+                <span className={styles.infoLabel}>Licencia</span>
+                <span className={styles.infoValue}>
+                  MIT License — ver LICENSE
+                </span>
+              </div>
+            </div>
+            <div className={styles.infoRow}>
+              <Info size={16} className={styles.infoIcon} />
+              <div>
+                <span className={styles.infoLabel}>Copyright</span>
+                <span className={styles.infoValue}>
+                  © {new Date().getFullYear()} Samuel Chourio
                 </span>
               </div>
             </div>
